@@ -1,0 +1,25 @@
+---
+- hosts: all
+  gather_facts: no
+  connection: local
+
+  tasks:
+
+  - name: Define Default Values
+    set_fact:
+      int_mask: 255.255.255.254
+      vrf_name: test
+      prefix_entry_name: "{{ description }}"
+      int_description: "{{ description }}"
+      bgp_neighbor_desc: "{{ description }}"
+      vlan: "{{ lookup('csvfile', bgp_neighbor+' file=testdoc.csv delimiter=, col=5') }}"
+      local_as: "{{ lookup('csvfile', bgp_neighbor+' file=testdoc.csv.csv delimiter=, col=4') }}"
+      int_name: "TenGigabitEthernet0/0/2.{{ vlan }}"
+      int_ip: "{{ lookup('csvfile', bgp_neighbor+' file=testdoc.csv.csv delimiter=, col=1') }}"
+      advertised_subnet: "{{ lookup('csvfile', bgp_neighbor+' file=testdoc.csv.csv delimiter=, col=6') }}"
+      prefix_list_name: "{{ prefix_list_name }}"
+      
+   - name: template
+     ios_config:
+       src: bgp_template.j2
+      
