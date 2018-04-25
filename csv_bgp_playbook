@@ -5,7 +5,7 @@
 
   tasks:
 
-  - name: Define Default Values
+  - name: Define Values From CSV File
     set_fact:
       int_mask: 255.255.255.254
       vrf_name: test
